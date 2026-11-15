@@ -12,6 +12,6 @@ A single-page fashion storefront (men's and women's suits, blazers, coat-pant) t
 
 ## Editing the shop
 Everything is in `index.html`. Edit on GitHub (pencil icon) and commit; the site updates in about a minute.
-- **WhatsApp number:** the `CONFIG` block near the top of the `<script>` — `whatsappNumber: "919876543210"` (country code, digits only).
+- **WhatsApp number:** the `CONFIG` block near the top of the `<script>` — `whatsappNumber: "916204524008"` (country code, digits only).
 - **Logo:** upload an image named `logo.png` to this repository.
 - **Products and prices:** the `PRODUCTS` list just below `CONFIG`.
