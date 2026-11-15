@@ -334,7 +334,7 @@ input[type=range]{width:100%;accent-color:var(--navy);height:32px}
             <img class="brand-logo-img" data-logo alt="Gulxeb Fashion Industries">
             <div class="eyebrow" style="text-align:center;color:#8a6b2f">CUSTOMER ACCOUNT</div>
             <h1 id="authTitle">Login to Gulxeb</h1>
-            <p class="muted" id="authSubtitle">Enter your mobile number so we can confirm your order on WhatsApp.</p>
+            <p class="muted" id="authSubtitle">Verify your mobile number with OTP to continue.</p>
 
             <div id="phoneStep">
               <label class="auth-label" for="loginPhone">Mobile Number <span>*</span></label>
@@ -342,13 +342,16 @@ input[type=range]{width:100%;accent-color:var(--navy);height:32px}
                 <div class="country-code">+91</div>
                 <input id="loginPhone" class="auth-input" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel-national" placeholder="10-digit mobile number">
               </div>
-              <button class="auth-primary" onclick="sendOtp()">Continue</button>
+              <button class="auth-primary" id="sendOtpBtn" onclick="sendOtp()">Send OTP</button>
+              <div id="recaptcha"></div>
             </div>
 
             <div id="otpStep" style="display:none">
               <label class="auth-label" for="loginOtp">Enter OTP <span>*</span></label>
               <input id="loginOtp" class="auth-input" type="tel" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="6-digit OTP">
-              <button class="auth-primary" onclick="verifyOtp()">Verify OTP</button>
+              <p class="otp-hint" id="otpTimer"></p>
+              <button class="auth-primary" id="verifyOtpBtn" onclick="verifyOtp()">Verify OTP</button>
+              <button class="auth-secondary" id="resendBtn" onclick="resendOtp()" disabled>Resend OTP</button>
               <button class="auth-secondary" onclick="showPhoneStep()">Change mobile number</button>
             </div>
 
@@ -356,6 +359,8 @@ input[type=range]{width:100%;accent-color:var(--navy);height:32px}
               <div class="verified-pill" id="namePill">✓ Mobile number saved</div>
               <label class="auth-label" for="loginName">Full Name <span>*</span></label>
               <input id="loginName" class="auth-input" type="text" autocomplete="name" placeholder="Enter your full name">
+              <label class="auth-label" for="loginEmail">Email (optional)</label>
+              <input id="loginEmail" class="auth-input" type="email" autocomplete="email" placeholder="name@example.com">
               <button class="auth-primary" onclick="completeLogin()">Create Customer Account</button>
             </div>
 
@@ -678,6 +683,8 @@ input[type=range]{width:100%;accent-color:var(--navy);height:32px}
   </footer>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script>
 "use strict";
 /* =========================================================
@@ -686,6 +693,10 @@ input[type=range]{width:100%;accent-color:var(--navy);height:32px}
 const CONFIG = {
   whatsappNumber: "916204524008",          // orders go here, with country code, e.g. "919876543210"
   logo: "logo.png",            // upload your logo as logo.png next to index.html
+  // OTP login (Firebase Phone Auth) — paste the web app config from Firebase console
+  firebase: { apiKey: "", authDomain: "", projectId: "", appId: "" },
+  // Google Sheet for new customer accounts — the Apps Script web app URL (see google-sheet/Code.gs)
+  sheetUrl: "",
   supabaseUrl: "",             // database (filled in by setup)
   supabaseAnonKey: ""          // public key — safe to be here; data is protected by database rules
 };
@@ -1012,7 +1023,8 @@ function prefillCheckout(){
     $('#checkoutName').value = state.customer.name || '';
     $('#checkoutPhone').value = state.customer.phone || '';
     if(state.customer.email) $('#checkoutEmail').value = state.customer.email;
-    $('#verifiedCustomerLine').textContent = 'We will confirm your order and share payment details on WhatsApp.';
+    $('#verifiedCustomerLine').textContent = (state.customer.verified ? '✓ +91 ' + state.customer.phone + ' verified. ' : '') + 'We will confirm your order and share payment details on WhatsApp.';
+    $('#checkoutPhone').readOnly = !!state.customer.verified;
   }
   renderCheckoutSummary();
 }
@@ -1033,6 +1045,7 @@ function continueToPayment(){
   if(phone.length !== 10){ toast('Enter a valid 10-digit mobile number'); return; }
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ toast('Enter a valid email address'); return; }
   if(!cartLines().length){ toast('Your bag is empty'); go('cart'); return; }
+  if(state.customer.verified && phone !== state.customer.phone){ toast('Use your verified mobile number +91 ' + state.customer.phone); return; }
   state.customer.email = email;
   state.customer.phone = phone;
   store.set('customer', state.customer);
@@ -1134,34 +1147,114 @@ function showPhoneStep(){
   $('#nameStep').style.display = 'none';
   $('#phoneStep').style.display = 'block';
   $('#authTitle').textContent = 'Login to Gulxeb';
-  $('#authSubtitle').textContent = 'Enter your mobile number so we can confirm your order on WhatsApp.';
+  $('#authSubtitle').textContent = 'Verify your mobile number with OTP to continue.';
 }
-function sendOtp(){
+const OTP_ON = !!(CONFIG.firebase && CONFIG.firebase.apiKey && window.firebase);
+let fbAuth = null, confirmation = null, recaptcha = null, otpTimer = null, idToken = '';
+function initFirebase(){
+  if(!OTP_ON || fbAuth) return;
+  firebase.initializeApp(CONFIG.firebase);
+  fbAuth = firebase.auth();
+  fbAuth.languageCode = 'en';
+}
+function getRecaptcha(){
+  if(!recaptcha) recaptcha = new firebase.auth.RecaptchaVerifier('recaptcha', {size:'invisible'});
+  return recaptcha;
+}
+function startOtpTimer(){
+  let left = 30;
+  $('#resendBtn').disabled = true;
+  clearInterval(otpTimer);
+  $('#otpTimer').textContent = 'You can resend the OTP in ' + left + 's';
+  otpTimer = setInterval(() => {
+    left--;
+    if(left <= 0){ clearInterval(otpTimer); $('#otpTimer').textContent = ''; $('#resendBtn').disabled = false; }
+    else $('#otpTimer').textContent = 'You can resend the OTP in ' + left + 's';
+  }, 1000);
+}
+function otpError(e){
+  const c = (e && e.code) || '';
+  if(c.indexOf('invalid-verification-code') > -1) return 'Wrong OTP. Please check and try again.';
+  if(c.indexOf('code-expired') > -1) return 'OTP expired. Please resend.';
+  if(c.indexOf('too-many-requests') > -1 || c.indexOf('quota') > -1) return 'Too many attempts. Please try again later.';
+  if(c.indexOf('invalid-phone-number') > -1) return 'Please enter a valid mobile number.';
+  return 'Could not send OTP. Please try again.';
+}
+async function sendOtp(){
   const phone = ($('#loginPhone').value || '').replace(/\D/g,'');
-  if(phone.length !== 10){ toast('Please enter a valid 10-digit mobile number'); return; }
+  if(!/^[6-9]\d{9}$/.test(phone)){ toast('Please enter a valid 10-digit mobile number'); return; }
   pendingPhone = phone;
+  if(!OTP_ON){ showNameStep(); return; }   // OTP service not configured yet
+  initFirebase();
+  const btn = $('#sendOtpBtn'); btn.disabled = true; btn.textContent = 'Sending…';
+  try{
+    confirmation = await fbAuth.signInWithPhoneNumber('+91' + phone, getRecaptcha());
+    $('#phoneStep').style.display = 'none';
+    $('#otpStep').style.display = 'block';
+    $('#loginOtp').value = '';
+    $('#authSubtitle').textContent = 'OTP sent to +91 ' + phone;
+    $('#loginOtp').focus();
+    startOtpTimer();
+    toast('OTP sent');
+  }catch(e){
+    toast(otpError(e));
+    try{ recaptcha && recaptcha.clear(); }catch(_){}
+    recaptcha = null; $('#recaptcha').innerHTML = '';
+  }
+  btn.disabled = false; btn.textContent = 'Send OTP';
+}
+function resendOtp(){
+  $('#otpStep').style.display = 'none';
+  $('#phoneStep').style.display = 'block';
+  sendOtp();
+}
+async function verifyOtp(){
+  const otp = ($('#loginOtp').value || '').replace(/\D/g,'');
+  if(otp.length !== 6){ toast('Enter the 6-digit OTP'); return; }
+  if(!confirmation){ toast('Please request an OTP first'); return; }
+  const btn = $('#verifyOtpBtn'); btn.disabled = true; btn.textContent = 'Verifying…';
+  try{
+    const res = await confirmation.confirm(otp);
+    idToken = await res.user.getIdToken();
+    clearInterval(otpTimer);
+    const existing = store.get('profile_' + pendingPhone, null);
+    if(existing && existing.name){
+      state.customer = {name:existing.name, phone:pendingPhone, email:existing.email || '', verified:true};
+      store.set('customer', state.customer);
+      toast('Welcome back, ' + existing.name);
+      finishLogin();
+    } else {
+      showNameStep();
+    }
+  }catch(e){ toast(otpError(e)); }
+  btn.disabled = false; btn.textContent = 'Verify OTP';
+}
+function showNameStep(){
   $('#phoneStep').style.display = 'none';
   $('#otpStep').style.display = 'none';
   $('#nameStep').style.display = 'block';
-  $('#namePill').textContent = '✓ +91 ' + phone;
-  $('#authTitle').textContent = 'What should we call you?';
-  $('#authSubtitle').textContent = 'One last step to create your customer account.';
-}
-function verifyOtp(){
-  const otp = ($('#loginOtp').value || '').trim();
-  if(otp !== '123456'){ toast('Invalid OTP. Use demo OTP 123456'); return; }
-  $('#otpStep').style.display = 'none';
-  $('#nameStep').style.display = 'block';
-  $('#authTitle').textContent = 'What should we call you?';
-  $('#authSubtitle').textContent = 'Your mobile number is verified.';
+  $('#namePill').textContent = OTP_ON ? '✓ +91 ' + pendingPhone + ' verified' : '✓ +91 ' + pendingPhone;
+  $('#authTitle').textContent = 'Create your account';
+  $('#authSubtitle').textContent = OTP_ON ? 'Your mobile number is verified.' : 'One last step to create your customer account.';
 }
 function completeLogin(){
   const name = ($('#loginName').value || '').trim();
-  if(!name){ toast('Please enter your name'); return; }
-  state.customer = {name:name, phone:pendingPhone};
+  const email = ($('#loginEmail').value || '').trim();
+  if(name.length < 2){ toast('Please enter your full name'); return; }
+  if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ toast('Enter a valid email address'); return; }
+  state.customer = {name:name, phone:pendingPhone, email:email, verified:OTP_ON};
   store.set('customer', state.customer);
+  store.set('profile_' + pendingPhone, {name:name, email:email});
+  saveCustomerToSheet(state.customer);
   toast('Customer account created successfully');
   finishLogin();
+}
+function saveCustomerToSheet(c){
+  if(!CONFIG.sheetUrl) return;
+  const body = JSON.stringify({type:'signup', name:c.name, phone:'+91' + c.phone, email:c.email || '', idToken:idToken,
+    page:location.href, userAgent:navigator.userAgent});
+  // text/plain avoids a CORS preflight, which Apps Script does not answer
+  fetch(CONFIG.sheetUrl, {method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:body}).catch(() => {});
 }
 function finishLogin(){
   const next = state.pendingGo || 'home';
@@ -1173,6 +1266,8 @@ function signOut(){
   state.pendingGo = null;
   state.checkout = null;
   store.del('customer');
+  try{ fbAuth && fbAuth.signOut(); }catch(e){}
+  confirmation = null; idToken = '';
   $('#loginName').value = '';
   $('#loginPhone').value = '';
   $('#loginOtp').value = '';

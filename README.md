@@ -23,3 +23,7 @@ Everything is in `index.html`. Edit on GitHub (pencil icon) and commit; the site
 - Orders placed on the shop are saved to the database (prices are re-checked on the server) and still open in WhatsApp.
 - From the admin panel: see and search orders, change status (new → confirmed → paid → shipped → delivered), download CSV, and add/edit/hide products with photos.
 - Customers see the status you set under "My Orders".
+
+## OTP login and Google Sheet
+- **OTP:** Firebase Phone Authentication. Paste the Firebase web config into `CONFIG.firebase` in `index.html`. In Firebase: enable Phone sign-in, add `gulabking33-wq.github.io` to Authorized domains, and use the Blaze plan (SMS is billed per message). Until configured, login works without OTP.
+- **Google Sheet:** paste `google-sheet/Code.gs` into the Sheet's Apps Script, deploy as a Web app (Execute as Me, access Anyone), and put the URL in `CONFIG.sheetUrl`. New accounts are added to the "Customers" tab; the script re-checks the OTP with Firebase so fake entries are rejected.
