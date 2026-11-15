@@ -126,6 +126,7 @@ img{max-width:100%}
 .event p{font-size:11px;color:var(--muted);margin:4px 0}
 .toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%) translateY(20px);background:#101828;color:#fff;padding:11px 15px;border-radius:10px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:120;max-width:88vw;text-align:center}
 .wa-float{position:fixed;right:16px;bottom:96px;width:56px;height:56px;border-radius:50%;background:#25D366;color:#fff;border:0;box-shadow:0 6px 18px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;z-index:110;cursor:pointer}.wa-float svg{width:30px;height:30px}@media(min-width:900px){.wa-float{bottom:28px;right:28px}}
+.pic.has-img,.detailhero.has-img{background-size:cover;background-position:center top}.pic.has-img:before,.detailhero.has-img:before{display:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .empty{text-align:center;padding:48px 20px}
 .empty .big{font-size:45px}
@@ -684,8 +685,19 @@ input[type=range]{width:100%;accent-color:var(--navy);height:32px}
    ========================================================= */
 const CONFIG = {
   whatsappNumber: "916204524008",          // orders go here, with country code, e.g. "919876543210"
-  logo: "logo.png"             // upload your logo as logo.png next to index.html
+  logo: "logo.png",            // upload your logo as logo.png next to index.html
+  supabaseUrl: "",             // database (filled in by setup)
+  supabaseAnonKey: ""          // public key — safe to be here; data is protected by database rules
 };
+const DB_ON = !!(CONFIG.supabaseUrl && CONFIG.supabaseAnonKey);
+function db(path, opts){
+  opts = opts || {};
+  return fetch(CONFIG.supabaseUrl + '/rest/v1/' + path, {
+    method: opts.method || 'GET',
+    headers: Object.assign({apikey: CONFIG.supabaseAnonKey, Authorization: 'Bearer ' + CONFIG.supabaseAnonKey, 'Content-Type': 'application/json'}, opts.headers || {}),
+    body: opts.body ? JSON.stringify(opts.body) : undefined
+  });
+}
 /* =========================================================
    Gulxeb Fashion Industries — single-file storefront
    ========================================================= */
@@ -696,7 +708,7 @@ const LOGO = CONFIG.logo;
 /* ---------- catalogue: single source of truth ---------- */
 const SIZES = ['S','M','L','XL','XXL'];
 const CATS  = ['All','Suits','Blazers','Coat Pant'];
-const PRODUCTS = [
+let PRODUCTS = [
   {id:'gx-01', name:'Midnight Executive Suit',   price:5999, mrp:7499, cat:'Suits',     gender:'men',   tone:'',           badge:'Bestseller', rating:4.9, reviews:24, short:'4-piece • Imported premium', sizes:['S','M','L','XL','XXL'], desc:'Four-piece tailored set in imported premium fabric with signature silver detailing — cut for boardroom authority and evening presence alike.'},
   {id:'gx-02', name:'Silver Luxe Blazer',         price:4999, mrp:6499, cat:'Blazers',   gender:'men',   tone:'light',      badge:'New',        rating:4.8, reviews:41, short:'Silver-laced trim',           sizes:['M','L','XL'],            desc:'A structured blazer traced with silver-laced trim. Lightweight shoulder, confident drape, made to lead the room.'},
   {id:'gx-03', name:'Navy Heritage Coat Pant',    price:5499, mrp:6999, cat:'Coat Pant', gender:'men',   tone:'',           badge:'',           rating:4.7, reviews:18, short:'Classic tailored cut',         sizes:['S','M','L','XL','XXL'], desc:'Heritage navy coat-pant in a classic tailored cut. Built for weddings, board meets and every formal evening between.'},
@@ -748,7 +760,7 @@ const saveOrders= () => store.set('orders', state.orders);
 function cardHTML(p){
   const wished = state.wish.indexOf(p.id) > -1;
   return '<article class="card" tabindex="0" role="button" data-open="'+p.id+'" aria-label="'+esc(p.name)+', '+money(p.price)+'">'+
-    '<div class="pic '+(p.tone||'')+'">'+
+    '<div class="pic '+(p.img?'has-img ':'')+(p.tone||'')+'"'+(p.img?' style="background-image:url(\''+encodeURI(p.img)+'\')"':'')+'>'+
       (p.badge ? '<span class="picbadge">'+esc(p.badge)+'</span>' : '')+
       '<button class="heart'+(wished?' on':'')+'" data-wish="'+p.id+'" aria-label="'+(wished?'Remove from':'Save to')+' wishlist" aria-pressed="'+wished+'">'+(wished?'♥':'♡')+'</button>'+
     '</div>'+
@@ -897,7 +909,8 @@ function renderProduct(){
   $('#productMrp').textContent = money(p.mrp);
   $('#productOff').textContent = discount(p) + '% OFF';
   $('#productDesc').textContent = p.desc;
-  $('#productHero').className = 'detailhero ' + (p.tone || '');
+  $('#productHero').className = 'detailhero ' + (p.img ? 'has-img ' : '') + (p.tone || '');
+  $('#productHero').style.backgroundImage = p.img ? "url('" + encodeURI(p.img) + "')" : '';
   const h = $('#productHeart');
   const wished = isWished(p.id);
   h.textContent = wished ? '♥' : '♡';
@@ -1040,9 +1053,10 @@ function confirmOrder(){
     address: state.checkout.address,
     payment: method,
     total: cartTotal(),
-    items: cartLines().map(l => ({name:l.product.name, size:l.line.size, qty:l.line.qty, price:l.product.price}))
+    items: cartLines().map(l => ({id:l.product.id, name:l.product.name, size:l.line.size, qty:l.line.qty, price:l.product.price}))
   };
   sendWhatsApp(orderMessage(order));
+  saveOrderToDb(order);
   state.orders.unshift(order);
   state.lastOrder = order;
   saveOrders();
@@ -1057,7 +1071,7 @@ function renderOrders(){
   const list = state.orders;
   $('#ordersList').innerHTML = list.map(o =>
     '<div class="listrow">'+
-      '<div class="row"><div><b>#'+o.id+'</b><p>'+esc(o.items.map(i => i.name).join(', '))+'</p></div><span class="badge">Sent on WhatsApp</span></div>'+
+      '<div class="row"><div><b>#'+o.id+'</b><p>'+esc(o.items.map(i => i.name).join(', '))+'</p></div><span class="badge">'+esc(STATUS_LABEL[o.status] || 'Sent on WhatsApp')+'</span></div>'+
       '<div class="row" style="margin-top:10px"><span class="muted" style="font-size:11px">'+o.items.length+' item'+(o.items.length===1?'':'s')+' · '+new Date(o.ts).toLocaleDateString('en-IN')+'</span><b>'+money(o.total)+'</b></div>'+
       '<button class="darkbtn btnfull" style="margin-top:12px" onclick="openTracking(\''+o.id+'\')">Track shipment</button>'+
     '</div>').join('');
@@ -1204,7 +1218,7 @@ function go(id){
   if(id === 'cart') renderCart();
   if(id === 'checkout') prefillCheckout();
   if(id === 'payment'){ $('#payTotal').textContent = money(cartTotal()); }
-  if(id === 'orders') renderOrders();
+  if(id === 'orders'){ renderOrders(); refreshOrderStatuses(); }
   if(id === 'profile') renderProfile();
   if(id === 'home') renderHome();
 }
@@ -1234,6 +1248,42 @@ function orderMessage(o){
   return ['*New order '+o.id+'* — Gulxeb Fashion', '', ...lines, '', '*Total: '+money(o.total)+'* (free delivery)',
     'Payment: '+o.payment, '', '*Customer*', o.name, '+91 '+o.phone, o.email, '', '*Delivery address*', o.address].join('\n');
 }
+function saveOrderToDb(o){
+  if(!DB_ON) return;
+  db('orders', {method:'POST', headers:{Prefer:'return=minimal'}, body:{
+    order_no:o.id, name:o.name, phone:o.phone, email:o.email, address:o.address, payment:o.payment,
+    items:o.items.map(i => ({id:i.id, size:i.size, qty:i.qty})), total:o.total
+  }}).catch(() => {});
+}
+async function loadProducts(){
+  if(!DB_ON) return;
+  try{
+    const r = await db('products?select=*&active=eq.true&order=sort.asc,created_at.desc');
+    if(!r.ok) return;
+    const rows = await r.json();
+    if(!Array.isArray(rows) || !rows.length) return;
+    PRODUCTS = rows.map(x => ({id:x.id, name:x.name, price:x.price, mrp:x.mrp || x.price, cat:x.cat, gender:x.gender, tone:x.tone || '',
+      badge:x.badge || '', rating:Number(x.rating || 4.8), reviews:x.reviews || 0, short:x.short || '', sizes:x.sizes || SIZES,
+      desc:x.description || '', img:x.image_url || ''}));
+    state.cart = state.cart.filter(l => byId(l.id)); saveCart();
+    state.wish = state.wish.filter(id => byId(id)); saveWish();
+    state.product = PRODUCTS[0];
+    renderHome(); renderCollection('men'); renderCollection('women'); renderFilters(); renderSearch();
+    renderWishlist(); renderCart(); renderCounters();
+  }catch(e){}
+}
+async function refreshOrderStatuses(){
+  if(!DB_ON || !state.orders.length) return;
+  for(const o of state.orders.slice(0,10)){
+    try{
+      const r = await db('rpc/order_status', {method:'POST', body:{p_order_no:o.id, p_phone:o.phone}});
+      const rows = r.ok ? await r.json() : [];
+      if(rows[0]) o.status = rows[0].status;
+    }catch(e){}
+  }
+  saveOrders(); if(currentScreen() === 'orders') renderOrders();
+}
+const STATUS_LABEL = {new:'Sent on WhatsApp', confirmed:'Confirmed', paid:'Paid', shipped:'Shipped', delivered:'Delivered', cancelled:'Cancelled'};
 function resendOrder(){ if(state.lastOrder) sendWhatsApp(orderMessage(state.lastOrder)); }
 function dmOrder(){
   const scr = currentScreen();
@@ -1292,6 +1342,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderOrders();
   renderProfile();
   renderCounters();
+  loadProducts();
 });
 </script>
 </body>
