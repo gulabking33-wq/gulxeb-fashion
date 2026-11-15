@@ -1,0 +1,1296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#171513">
+<title>Gulxeb Fashion Industries — Premium Fashion Store</title>
+<style>
+:root{--navy:#101010;--navy2:#24201a;--silver:#e7dfd2;--silver2:#f7f1e8;--ink:#161412;--muted:#706b63;--white:#fffdf9;--line:#e8e0d4;--gold:#c5a24a;--cream:#f7f1e8;--green:#157347;--danger:#b42318;--star:#a77c2d}
+*{box-sizing:border-box}
+body{margin:0;background:#f3f5f7;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);-webkit-text-size-adjust:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+img{max-width:100%}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px}
+.h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:30px;margin:6px 0 18px;line-height:1.15}
+.h2{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:23px;margin:4px 0 14px}
+.eyebrow{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#8a93a0}
+
+/* ---------- shell ---------- */
+.site{min-height:100vh;background:#fff;display:flex;flex-direction:column}
+.phone{width:100%;display:block}
+.app{padding-bottom:0}
+.screen{display:none;padding:18px 16px}
+.screen.active{display:block}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+
+/* ---------- desktop header ---------- */
+.desktop-header{height:78px;display:none;align-items:center;justify-content:space-between;padding:0 5vw;border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:60}
+.web-brand{display:flex;align-items:center;gap:11px;cursor:pointer;background:none;border:0;padding:0;text-align:left}
+.web-brand b{font-size:18px;letter-spacing:3px}
+.web-brand small{display:block;color:#8a93a0;font-size:8px;letter-spacing:1.8px;margin-top:2px}
+.web-nav{display:flex;gap:28px}
+.web-nav button,.footer-links button{border:0;background:none;font-weight:700;color:#344054;font-size:13px;padding:10px 2px}
+.web-nav button:hover,.footer-links button:hover{color:var(--navy)}
+.web-actions{display:flex;gap:8px;align-items:center}
+.iconbtn{border:0;background:#f5f6f8;width:42px;height:42px;border-radius:50%;font-size:18px;display:grid;place-items:center;position:relative;line-height:1}
+.iconbtn:hover{background:#eceef1}
+.bagcount{position:absolute;top:-2px;right:-2px;min-width:18px;height:18px;border-radius:9px;background:var(--navy);color:#fff;font-size:10px;font-weight:800;display:none;place-items:center;padding:0 4px}
+.bagcount.show{display:grid}
+.brand-logo{width:54px;height:54px;object-fit:contain;border-radius:50%;background:var(--cream);display:block}
+
+/* ---------- mobile header ---------- */
+.top{display:block;position:sticky;top:0;z-index:40;background:#fff;border-bottom:1px solid var(--line);padding:11px 14px 0}
+.brand{display:flex;align-items:center;gap:9px;background:none;border:0;padding:0;text-align:left}
+.brand b{font-size:15px;letter-spacing:2.2px;display:block}
+.brand small{color:#8a93a0;font-size:8px;letter-spacing:1.7px;display:block;margin-top:2px}
+.top .iconbtn{width:40px;height:40px;font-size:17px}
+.search{margin-top:10px;background:#f5f6f8;border:1px solid #edf0f3;border-radius:12px;padding:12px 13px;display:flex;gap:9px;align-items:center;width:100%;text-align:left;color:var(--muted);font-size:16px}
+.mobilenav{display:flex;gap:8px;overflow-x:auto;padding:10px 0 11px;scrollbar-width:none}
+.mobilenav::-webkit-scrollbar{display:none}
+.mnav{flex:0 0 auto;white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 15px;font-size:13px;font-weight:700;min-height:40px}
+.mnav[aria-current="page"]{background:#171513;color:#fff;border-color:#171513}
+
+/* ---------- hero / sections ---------- */
+.hero{border-radius:20px;overflow:hidden;background:linear-gradient(135deg,#15120f 0%,#3a3022 58%,#d8cdbd 150%);color:#fff;min-height:265px;padding:25px;position:relative}
+.hero:after{content:"";position:absolute;width:190px;height:190px;border-radius:50%;right:-55px;bottom:-65px;background:radial-gradient(circle,#e6ebf2aa 0,#7e8a99 30%,transparent 70%)}
+.hero>*{position:relative;z-index:1}
+.hero .eyebrow{color:#cbd4df}
+.hero h1{font-family:Georgia,serif;font-weight:400;font-size:36px;line-height:1.03;margin:10px 0 8px;max-width:250px}
+.hero p{color:#d8dee7;font-size:13px;max-width:235px;line-height:1.5}
+.primary{border:0;background:var(--silver2);color:#171513;font-weight:800;border-radius:11px;padding:13px 16px;min-height:46px}
+.darkbtn{border:1px solid #344962;background:#171513;color:#fff;border-radius:11px;padding:13px 16px;font-weight:800;min-height:46px}
+.btnfull{width:100%}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:22px 0 12px}
+.sectionhead h2{font-size:18px;margin:0}
+.link{border:0;background:none;color:#344e6e;font-weight:700;font-size:12px;min-height:40px;padding:8px 2px;display:inline-flex;align-items:center}
+.chips{display:flex;gap:9px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;white-space:nowrap;border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 15px;font-size:12px;min-height:40px}
+.chip.active{background:#171513;color:#fff;border-color:var(--navy)}
+
+/* ---------- product cards ---------- */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{border:1px solid var(--line);border-radius:15px;overflow:hidden;background:#fff;display:block;width:100%;text-align:left;padding:0;cursor:pointer;transition:.2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 30px #10182814}
+.pic{height:190px;background:linear-gradient(150deg,#eef1f4,#c6ced8);position:relative;display:grid;place-items:center}
+.pic:before{content:"";width:82px;height:145px;border-radius:38px 38px 18px 18px;background:linear-gradient(100deg,#1d2c3e,#071426 65%,#8c98a6);box-shadow:0 12px 24px #11182722;transform:rotate(1deg)}
+.pic.light:before{background:linear-gradient(100deg,#d7dbe1,#fafbfc 55%,#8c98a6)}
+.pic.women:before{width:86px;height:142px;border-radius:35px 35px 28px 28px;background:linear-gradient(100deg,#27384e,#0b1829 55%,#aeb7c1)}
+.heart{position:absolute;top:8px;right:8px;width:40px;height:40px;border:0;border-radius:50%;background:#ffffffe6;font-size:16px;display:grid;place-items:center;box-shadow:0 2px 8px #10182818}
+.heart.on{color:var(--danger);background:#fff}
+.picbadge{position:absolute;left:8px;top:8px;background:#171513;color:#fff;font-size:9px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:5px 8px;border-radius:6px}
+.info{padding:11px}
+.info b{font-size:13px;display:block}
+.info p{margin:4px 0;color:var(--muted);font-size:11px}
+.price{font-weight:900;color:var(--navy);font-size:14px}
+.old{text-decoration:line-through;color:#98a2b3;font-weight:500;margin-left:6px;font-size:11px}
+.off{margin-left:6px;color:var(--green);font-weight:800;font-size:10px}
+.raterow{display:flex;align-items:center;gap:5px;margin-top:6px;font-size:10px}
+.stars{color:var(--star);font-size:12px;letter-spacing:1px}
+.badge{display:inline-block;background:#edf2f7;color:#29445f;padding:4px 7px;border-radius:6px;font-size:9px;font-weight:800;margin-top:6px}
+
+/* ---------- misc components ---------- */
+.catgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.cat{border:1px solid var(--line);border-radius:13px;padding:13px 7px;text-align:center;font-size:11px;font-weight:700;background:#fbfcfd;background-clip:padding-box}
+.cat .caticon{font-size:22px;margin-bottom:6px}
+.cat:hover{border-color:var(--gold)}
+.listrow{border:1px solid var(--line);border-radius:14px;padding:13px;margin:10px 0;background:#fff}
+.listrow b{font-size:13px}
+.listrow p{font-size:11px;color:var(--muted);margin:5px 0;line-height:1.55}
+.hr{border:0;border-top:1px solid var(--line);margin:12px 0}
+.filterbar{display:flex;gap:8px;margin:0 0 15px}
+.filterbar button{flex:1;padding:10px;border:1px solid var(--line);background:#fff;border-radius:10px;font-weight:700;font-size:11px;min-height:44px}
+.muted{color:var(--muted)}
+.starsrow{color:var(--star);font-size:13px}
+.detailhero{height:340px;border-radius:18px;background:linear-gradient(150deg,#edf0f4,#b8c1cc);display:grid;place-items:center;position:relative;overflow:hidden}
+.detailhero:before{content:"";width:150px;height:260px;border-radius:58px 58px 28px 28px;background:linear-gradient(100deg,#203047,#071426 58%,#9ca8b5);box-shadow:0 25px 40px #11182733}
+.detailhero.light:before{background:linear-gradient(100deg,#d7dbe1,#fafbfc 55%,#8c98a6)}
+.detailhero.women:before{width:158px;height:255px;border-radius:55px 55px 34px 34px;background:linear-gradient(100deg,#27384e,#0b1829 55%,#aeb7c1)}
+.sizes{display:flex;gap:8px;flex-wrap:wrap}
+.size{min-width:48px;min-height:44px;padding:10px;border:1px solid var(--line);border-radius:9px;background:#fff;text-align:center;font-weight:700}
+.size.selected{background:#171513;color:#fff;border-color:#171513}
+.size[disabled]{opacity:.35;text-decoration:line-through;cursor:not-allowed}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.qty button{border:0;background:#f7f8fa;width:44px;height:44px;font-size:17px;font-weight:700}
+.qty span{width:38px;text-align:center;font-weight:800}
+.progress{display:flex;gap:5px;margin:16px 0}
+.step{height:5px;flex:1;background:#e4e8ee;border-radius:9px}
+.step.done{background:var(--navy)}
+.track{margin-top:18px;border-left:2px solid #d7dde5;padding-left:18px}
+.event{position:relative;margin-bottom:22px}
+.event:before{content:"";position:absolute;left:-25px;top:2px;width:10px;height:10px;border-radius:50%;background:#cdd5df;box-shadow:0 0 0 1px #d7dde5}
+.event.done:before{background:var(--navy)}
+.event b{font-size:13px}
+.event p{font-size:11px;color:var(--muted);margin:4px 0}
+.toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%) translateY(20px);background:#101828;color:#fff;padding:11px 15px;border-radius:10px;font-size:12px;opacity:0;pointer-events:none;transition:.25s;z-index:120;max-width:88vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.empty{text-align:center;padding:48px 20px}
+.empty .big{font-size:45px}
+.empty h2{margin:10px 0 6px;font-family:Georgia,serif;font-weight:400}
+.empty p{color:var(--muted);font-size:13px;line-height:1.6}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.stat{border:1px solid var(--line);border-radius:14px;padding:14px 10px;text-align:center;background:#fff}
+.stat b{display:block;font-size:20px;font-family:Georgia,serif}
+.stat span{font-size:10px;color:var(--muted);letter-spacing:.6px;text-transform:uppercase}
+.rangewrap{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:8px}
+input[type=range]{width:100%;accent-color:var(--navy);height:32px}
+.swatch{width:34px;height:34px;border-radius:9px;border:2px solid transparent;padding:0}
+.swatch.on{border-color:var(--navy)}
+.cartin{display:flex;gap:12px;align-items:flex-start}
+.cartin .thumb{width:64px;height:82px;border-radius:10px;background:linear-gradient(150deg,#eef1f4,#c6ced8);flex:0 0 auto;position:relative}
+.cartin .thumb:before{content:"";position:absolute;inset:0;margin:auto;width:26px;height:48px;border-radius:14px 14px 6px 6px;background:linear-gradient(100deg,#1d2c3e,#071426 65%,#8c98a6)}
+.cartin .thumb.light:before{background:linear-gradient(100deg,#d7dbe1,#fafbfc 55%,#8c98a6)}
+.cartin .thumb.women:before{background:linear-gradient(100deg,#27384e,#0b1829 55%,#aeb7c1)}
+.cartin .body{flex:1;min-width:0}
+.cartin .name{font-size:13px;font-weight:700}
+.cartin .meta{font-size:11px;color:var(--muted);margin:3px 0 8px}
+.linkrow{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-top:10px}
+.totals{margin-top:14px}
+
+/* ---------- bottom nav (mobile) ---------- */
+.bottom{position:fixed;bottom:0;left:0;right:0;width:100%;height:calc(64px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:#fffffff2;backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;z-index:50}
+.navitem{flex:1;border:0;background:none;font-size:10px;color:#667085;padding-top:9px;display:flex;flex-direction:column;align-items:center;gap:3px;min-height:56px;position:relative}
+.navitem b{font-size:19px;line-height:22px}
+.navitem.active{color:#171513;font-weight:800}
+.navitem .dot{position:absolute;top:2px;left:calc(50% + 5px);background:var(--danger);color:#fff;font-size:9px;border-radius:9px;min-width:16px;height:16px;display:grid;place-items:center;padding:0 4px;font-weight:800;line-height:1}
+
+/* ---------- auth ---------- */
+.brand-logo-img{width:130px;height:130px;object-fit:contain;display:block;margin:0 auto 16px;background:var(--cream);border-radius:20px}
+.auth-wrap{max-width:560px;margin:0 auto}
+.auth-card{padding:28px;border:1px solid var(--line);border-radius:26px;background:var(--white);box-shadow:0 24px 70px #6f5b3a18}
+.auth-card h1{font-family:Georgia,serif;font-weight:400;font-size:30px;margin:0 0 8px;text-align:center}
+.auth-card .muted{text-align:center;line-height:1.6;font-size:13px}
+.auth-label{display:block;font-size:12px;font-weight:900;letter-spacing:.7px;margin:18px 0 7px}
+.auth-label span{color:var(--gold)}
+.phone-row{display:flex;gap:9px}
+.country-code{padding:14px 13px;border:1px solid var(--line);border-radius:12px;background:#f4eee5;font-weight:800}
+.auth-input{width:100%;padding:14px;border:1px solid #d9d0c4;border-radius:12px;background:#fff;outline:0;font-size:16px}
+.auth-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px #c5a24a22}
+.auth-primary{width:100%;margin-top:18px;border:0;border-radius:12px;padding:14px;background:#171513;color:#fff;font-weight:900;min-height:48px}
+.auth-secondary{width:100%;margin-top:9px;border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;color:#171513;font-weight:800;min-height:48px}
+.otp-hint{margin:10px 0 0;text-align:center;font-size:11px;color:#81796f}
+.verified-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;background:#f0eadf;color:#5e4c28;font-size:10px;font-weight:900;margin-top:12px}
+.required-box{padding:20px;border:1px solid var(--line);border-radius:20px;background:#fbf8f3;margin:18px 0}
+.required-box h3{margin:0 0 3px;font-family:Georgia,serif;font-weight:400}
+.required-box p{font-size:11px;color:var(--muted);margin:0 0 14px}
+.required-label{display:block;font-size:12px;font-weight:900;margin:14px 0 6px}
+.required-label span{color:#a77c2d}
+.required-input{width:100%;padding:13px 14px;border:1px solid #d9d0c4;border-radius:11px;background:#fff;outline:0;font-size:16px;resize:vertical}
+.required-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px #c5a24a22}
+.required-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.account-summary{padding:14px;border:1px solid var(--line);border-radius:14px;background:#fff;margin-top:14px}
+.account-summary p{margin:5px 0 0;font-size:11px;color:var(--muted)}
+.payopt{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px}
+.payopt input{width:22px;height:22px;accent-color:var(--navy)}
+
+/* ---------- footer ---------- */
+.site-footer{background:var(--navy);color:#dce3ec;padding:40px 7vw 30px;display:grid;grid-template-columns:1fr 2fr 2fr auto;gap:26px;align-items:center;margin-top:auto}
+.site-footer b{font-size:22px;letter-spacing:3px}
+.site-footer span{display:block;font-size:9px;letter-spacing:2px;color:#9ba9ba;margin-top:3px}
+.site-footer p{margin:0;color:#aeb9c7;font-size:12px;line-height:1.6}
+.footer-links{display:flex;gap:14px;flex-wrap:wrap}
+.footer-links button{color:#dce3ec}
+.site-footer>small{color:#8290a1;font-size:10px}
+
+/* =========================================================
+   FULL-WEB LAYOUT  (desktop ≥901px)
+   ========================================================= */
+@media(min-width:901px){
+  .desktop-header{display:flex}
+  .top{display:none}
+  .bottom{display:none}
+  .screen{max-width:1280px;margin:0 auto;padding:52px 5vw}
+  .hero{min-height:420px;border-radius:28px;padding:60px;display:flex;flex-direction:column;justify-content:center}
+  .hero h1{font-size:64px;max-width:560px}
+  .hero p{font-size:16px;max-width:430px}
+  .hero .primary{width:max-content;margin-top:10px}
+  .sectionhead{margin-top:42px}
+  .sectionhead h2{font-size:25px}
+  .h1{font-size:40px}
+  .grid{grid-template-columns:repeat(4,1fr);gap:20px}
+  .card{border-radius:18px}
+  .pic{height:340px}
+  .pic:before{width:130px;height:230px}
+  .pic.women:before{width:135px;height:225px}
+  .info{padding:15px}
+  .info b{font-size:15px}
+  .info p{font-size:12px}
+  .price{font-size:16px}
+  .catgrid{grid-template-columns:repeat(4,1fr);gap:15px}
+  .cat{padding:22px 12px;font-size:13px;min-height:100px}
+  .detailhero{height:620px;border-radius:22px}
+  .detailhero:before{width:260px;height:440px}
+  .listrow{padding:18px;border-radius:16px}
+  .listrow b{font-size:15px}
+  .listrow p{font-size:12px}
+  .chip,.mnav{font-size:13px;min-height:42px;padding:10px 18px}
+  .filterbar button{font-size:13px}
+  .cartin .thumb{width:86px;height:110px}
+  .toast{bottom:28px}
+}
+
+/* =========================================================
+   MOBILE-FIRST  (≤900px)
+   ========================================================= */
+@media(max-width:900px){
+  .desktop-header{display:none}
+  .app{padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+  .toast{bottom:calc(78px + env(safe-area-inset-bottom))}
+  .screen{padding:20px 14px}
+  .hero{min-height:300px}
+  .grid{grid-template-columns:1fr 1fr;gap:10px}
+  .catgrid{grid-template-columns:repeat(2,1fr)}
+  .required-grid{grid-template-columns:1fr}
+  .site-footer{grid-template-columns:1fr 1fr;padding:34px 22px}
+}
+@media(max-width:600px){
+  .screen{padding:18px 14px}
+  .h1{font-size:26px}
+  .h2{font-size:20px}
+  .hero{min-height:320px;padding:26px;border-radius:20px}
+  .hero h1{font-size:34px;max-width:100%}
+  .hero p{font-size:13px;max-width:100%}
+  .grid{grid-template-columns:1fr 1fr;gap:10px}
+  .pic{height:200px}
+  .pic:before{width:82px;height:145px}
+  .pic.women:before{width:86px;height:142px}
+  .heart{width:38px;height:38px;font-size:15px}
+  .auth-card{padding:22px}
+  .auth-card h1{font-size:25px}
+  .brand-logo-img{width:96px;height:96px}
+  .statgrid{gap:8px}
+  .site-footer{grid-template-columns:1fr;padding:30px 20px}
+  .sectionhead h2{font-size:17px}
+}
+@media(max-width:360px){
+  .grid{grid-template-columns:1fr}
+  .catgrid{grid-template-columns:1fr 1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<div class="site">
+
+  <!-- ===================== DESKTOP HEADER ===================== -->
+  <header class="desktop-header">
+    <button class="web-brand" onclick="go('home')">
+      <img class="brand-logo" data-logo alt="Gulxeb Fashion Industries logo">
+      <span><b>GULXEB</b><small>FASHION INDUSTRIES</small></span>
+    </button>
+    <nav class="web-nav" aria-label="Primary">
+      <button onclick="go('home')">Home</button>
+      <button onclick="go('men')">Men</button>
+      <button onclick="go('women')">Women</button>
+      <button onclick="go('categories')">Categories</button>
+      <button onclick="go('offers')">Offers</button>
+    </nav>
+    <div class="web-actions">
+      <button class="iconbtn" aria-label="Search" onclick="go('search')">⌕</button>
+      <button class="iconbtn" aria-label="Wishlist" onclick="go('wishlist')">♡<span class="bagcount" id="webWishCount" aria-hidden="true"></span></button>
+      <button class="iconbtn" aria-label="Shopping bag" onclick="go('cart')">🛍<span class="bagcount" id="webBagCount" aria-hidden="true"></span></button>
+      <button class="iconbtn" aria-label="Account" onclick="account()">◯</button>
+    </div>
+  </header>
+
+  <div class="phone"><div class="app" id="app">
+
+    <!-- ===================== MOBILE HEADER ===================== -->
+    <header class="top">
+      <div class="row">
+        <button class="brand" onclick="go('home')">
+          <img class="brand-logo" data-logo alt="Gulxeb Fashion Industries logo">
+          <span><b>GULXEB</b><small>FASHION INDUSTRIES</small></span>
+        </button>
+        <div class="row" style="gap:6px">
+          <button class="iconbtn" aria-label="Search" onclick="go('search')">⌕</button>
+          <button class="iconbtn" aria-label="Wishlist" onclick="go('wishlist')">♡<span class="bagcount" id="mobWishCount" aria-hidden="true"></span></button>
+          <button class="iconbtn" aria-label="Shopping bag" onclick="go('cart')">🛍<span class="bagcount" id="mobBagCount" aria-hidden="true"></span></button>
+          <button class="iconbtn" aria-label="Account" onclick="account()">◯</button>
+        </div>
+      </div>
+      <button class="search" onclick="go('search')"><span aria-hidden="true">⌕</span><span>Search suits, blazers, collections…</span></button>
+      <nav class="mobilenav" aria-label="Primary">
+        <button class="mnav" data-nav="home" onclick="go('home')">Home</button>
+        <button class="mnav" data-nav="men" onclick="go('men')">Men</button>
+        <button class="mnav" data-nav="women" onclick="go('women')">Women</button>
+        <button class="mnav" data-nav="categories" onclick="go('categories')">Categories</button>
+        <button class="mnav" data-nav="offers" onclick="go('offers')">Offers</button>
+      </nav>
+    </header>
+
+    <main>
+
+      <!-- ===================== LOGIN ===================== -->
+      <section id="login" class="screen">
+        <div class="auth-wrap">
+          <div class="auth-card">
+            <img class="brand-logo-img" data-logo alt="Gulxeb Fashion Industries">
+            <div class="eyebrow" style="text-align:center;color:#8a6b2f">CUSTOMER ACCOUNT</div>
+            <h1 id="authTitle">Login to Gulxeb</h1>
+            <p class="muted" id="authSubtitle">Enter your mobile number so we can confirm your order on WhatsApp.</p>
+
+            <div id="phoneStep">
+              <label class="auth-label" for="loginPhone">Mobile Number <span>*</span></label>
+              <div class="phone-row">
+                <div class="country-code">+91</div>
+                <input id="loginPhone" class="auth-input" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel-national" placeholder="10-digit mobile number">
+              </div>
+              <button class="auth-primary" onclick="sendOtp()">Continue</button>
+            </div>
+
+            <div id="otpStep" style="display:none">
+              <label class="auth-label" for="loginOtp">Enter OTP <span>*</span></label>
+              <input id="loginOtp" class="auth-input" type="tel" inputmode="numeric" maxlength="6" autocomplete="one-time-code" placeholder="6-digit OTP">
+              <button class="auth-primary" onclick="verifyOtp()">Verify OTP</button>
+              <button class="auth-secondary" onclick="showPhoneStep()">Change mobile number</button>
+            </div>
+
+            <div id="nameStep" style="display:none">
+              <div class="verified-pill" id="namePill">✓ Mobile number saved</div>
+              <label class="auth-label" for="loginName">Full Name <span>*</span></label>
+              <input id="loginName" class="auth-input" type="text" autocomplete="name" placeholder="Enter your full name">
+              <button class="auth-primary" onclick="completeLogin()">Create Customer Account</button>
+            </div>
+
+            <div id="signedInStep" style="display:none">
+              <div class="verified-pill" id="signedInPill">✓ Customer account</div>
+              <button class="auth-primary" onclick="finishLogin()">Continue</button>
+              <button class="auth-secondary" onclick="signOut()">Use a different mobile number</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== HOME ===================== -->
+      <section id="home" class="screen active">
+        <div class="hero">
+          <div class="eyebrow">GULXEB / NEW EDIT</div>
+          <h1>Wear Your Confidence.</h1>
+          <p>Premium tailoring, refined details and statement silhouettes—made for your next occasion.</p>
+          <button class="primary" onclick="go('men')">Explore Collection →</button>
+        </div>
+        <div class="sectionhead"><h2>Shop by mood</h2><button class="link" onclick="go('categories')">All categories</button></div>
+        <div class="chips">
+          <button class="chip" onclick="go('men')">Men</button>
+          <button class="chip" onclick="go('women')">Women</button>
+          <button class="chip" onclick="go('offers')">Offers</button>
+          <button class="chip" onclick="go('categories')">Occasion</button>
+        </div>
+        <div class="sectionhead"><h2>Signature suits</h2><button class="link" onclick="go('men')">View all</button></div>
+        <div class="grid" id="homeGrid"></div>
+        <div class="sectionhead"><h2>Gulxeb promise</h2></div>
+        <div class="catgrid">
+          <div class="cat"><div class="caticon">✦</div>Premium Fabric</div>
+          <div class="cat"><div class="caticon">⌁</div>Custom Fit</div>
+          <div class="cat"><div class="caticon">✓</div>Quality Check</div>
+          <div class="cat"><div class="caticon">↗</div>Easy Support</div>
+        </div>
+      </section>
+
+      <!-- ===================== MEN ===================== -->
+      <section id="men" class="screen">
+        <div class="row">
+          <div><div class="eyebrow">COLLECTION</div><h1 class="h1" style="margin:4px 0 0">Men</h1></div>
+          <button class="iconbtn" aria-label="Open filters" onclick="go('filters')">☷</button>
+        </div>
+        <div class="chips" style="margin:15px 0" id="menChips"></div>
+        <div class="filterbar">
+          <button onclick="go('filters')">☷ Filter</button>
+          <button onclick="sortCollection('priceAsc')">Price: Low → High</button>
+          <button onclick="sortCollection('priceDesc')">Price: High → Low</button>
+        </div>
+        <p class="muted" id="menCount" style="font-size:12px;margin:-6px 0 12px"></p>
+        <div class="grid" id="menGrid"></div>
+      </section>
+
+      <!-- ===================== WOMEN ===================== -->
+      <section id="women" class="screen">
+        <div class="eyebrow">COLLECTION</div>
+        <h1 class="h1">Women</h1>
+        <div class="chips" style="margin-bottom:16px" id="womenChips"></div>
+        <div class="filterbar">
+          <button onclick="go('filters')">☷ Filter</button>
+          <button onclick="sortCollection('priceAsc')">Price: Low → High</button>
+          <button onclick="sortCollection('priceDesc')">Price: High → Low</button>
+        </div>
+        <p class="muted" id="womenCount" style="font-size:12px;margin:-6px 0 12px"></p>
+        <div class="grid" id="womenGrid"></div>
+      </section>
+
+      <!-- ===================== CATEGORIES ===================== -->
+      <section id="categories" class="screen">
+        <div class="eyebrow">DISCOVER</div>
+        <h1 class="h1">Categories</h1>
+        <div class="catgrid">
+          <div class="cat" role="button" tabindex="0" onclick="browse('men','Suits')"><div class="caticon">🧥</div>Men's Suits</div>
+          <div class="cat" role="button" tabindex="0" onclick="browse('women','Suits')"><div class="caticon">✦</div>Women's Suits</div>
+          <div class="cat" role="button" tabindex="0" onclick="browse('men','Blazers')"><div class="caticon">◈</div>Blazers</div>
+          <div class="cat" role="button" tabindex="0" onclick="browse('men','Coat Pant')"><div class="caticon">⇢</div>Coat Pant</div>
+        </div>
+        <div class="sectionhead"><h2>Shop by occasion</h2></div>
+        <div class="listrow" role="button" tabindex="0" onclick="browse('men','Suits')"><b>Wedding & Celebration</b><p>Statement tailoring for memorable moments →</p></div>
+        <div class="listrow" role="button" tabindex="0" onclick="browse('men','Blazers')"><b>Business & Formal</b><p>Clean silhouettes with premium finishing →</p></div>
+        <div class="listrow" role="button" tabindex="0" onclick="browse('women','Blazers')"><b>Evening & Occasion</b><p>Refined looks with standout details →</p></div>
+      </section>
+
+      <!-- ===================== SEARCH ===================== -->
+      <section id="search" class="screen">
+        <div class="eyebrow">SEARCH</div>
+        <h1 class="h1">Find your look</h1>
+        <div class="search" style="margin:4px 0 14px;background:#fff;border-color:var(--line)">
+          <span aria-hidden="true">⌕</span>
+          <input id="searchInput" type="search" placeholder="Try “navy blazer”" aria-label="Search products" style="border:0;outline:0;background:transparent;width:100%;font-size:16px">
+          <button class="link" id="searchClear" onclick="clearSearch()" style="display:none">Clear</button>
+        </div>
+        <div class="chips">
+          <button class="chip" onclick="searchFill('suit')">Suits</button>
+          <button class="chip" onclick="searchFill('blazer')">Blazers</button>
+          <button class="chip" onclick="searchFill('silver')">Silver</button>
+          <button class="chip" onclick="searchFill('navy')">Navy</button>
+          <button class="chip" onclick="searchFill('coat')">Coat Pant</button>
+        </div>
+        <div class="sectionhead"><h2 id="searchTitle">Popular right now</h2></div>
+        <p class="muted" id="searchCount" style="font-size:12px;margin:-6px 0 12px"></p>
+        <div class="grid" id="searchGrid"></div>
+        <div id="searchEmpty" class="empty" style="display:none">
+          <div class="big">🔍</div>
+          <h2>No matches</h2>
+          <p>We couldn't find that style. Try “suit”, “blazer”, “silver” or browse the full collection.</p>
+          <button class="darkbtn" onclick="clearSearch()">Show all styles</button>
+        </div>
+      </section>
+
+      <!-- ===================== FILTERS ===================== -->
+      <section id="filters" class="screen">
+        <div class="row"><button class="link" onclick="go(filterReturn)">← Back</button><h2 class="h2" style="margin:0">Filters</h2><button class="link" onclick="resetFilters()">Reset</button></div>
+        <div class="listrow">
+          <b>Category</b>
+          <div class="chips" style="margin-top:10px" id="filterCats"></div>
+        </div>
+        <div class="listrow">
+          <b>Size</b>
+          <div class="sizes" style="margin-top:10px" id="filterSizes"></div>
+        </div>
+        <div class="listrow">
+          <b>Price</b>
+          <p id="filterPriceLabel">₹1,500 — ₹8,000</p>
+          <input id="filterPrice" type="range" min="1500" max="8000" step="100" value="8000" aria-label="Maximum price">
+          <div class="rangewrap"><span>₹1,500</span><span>₹8,000</span></div>
+        </div>
+        <button class="darkbtn btnfull" style="margin-top:8px" onclick="applyFilters()">Apply Filters</button>
+        <p class="muted" id="filterSummary" style="font-size:12px;text-align:center;margin-top:12px"></p>
+      </section>
+
+      <!-- ===================== PRODUCT ===================== -->
+      <section id="product" class="screen">
+        <div class="detailhero" id="productHero">
+          <button class="back" onclick="go(productReturn())" aria-label="Back" style="position:absolute;top:12px;left:12px;border:0;background:#fffdd;border-radius:50%;width:44px;height:44px;font-size:18px">←</button>
+          <button class="heart" id="productHeart" aria-label="Save to wishlist" style="position:absolute;top:12px;right:12px" onclick="toggleWish(state.product.id)">♡</button>
+        </div>
+        <div class="sectionhead" style="margin-top:16px">
+          <div>
+            <div class="eyebrow" id="productCat">GULXEB SIGNATURE</div>
+            <h1 class="h1" id="productName" style="margin:5px 0"></h1>
+            <div class="starsrow" id="productRating"></div>
+          </div>
+        </div>
+        <div style="margin:12px 0;display:flex;align-items:baseline;flex-wrap:wrap;gap:2px">
+          <span class="price" id="productPrice" style="font-size:22px"></span>
+          <span class="old" id="productMrp"></span>
+          <span class="off" id="productOff"></span>
+        </div>
+        <p class="muted" id="productDesc" style="font-size:12px;line-height:1.6"></p>
+        <div class="sectionhead"><h2>Choose size</h2><button class="link" onclick="toast('Size guide: S 36–38 · M 40–42 · L 44–46 · XL 48 · XXL 50+')">Size guide</button></div>
+        <div class="sizes" id="productSizes"></div>
+        <div class="sectionhead"><h2>Quantity</h2></div>
+        <div class="qty"><button onclick="changeQty(-1)" aria-label="Decrease quantity">−</button><span id="qty">1</span><button onclick="changeQty(1)" aria-label="Increase quantity">+</button></div>
+        <div style="display:flex;gap:9px;margin-top:18px">
+          <button class="darkbtn" style="flex:1" onclick="addToCart(state.product.id,selectedSize,state.qty)">Add to Bag</button>
+          <button class="primary" style="flex:1" onclick="buyNow()">Buy Now</button>
+        </div>
+        <button class="primary btnfull" style="margin-top:9px" onclick="dmOrder()">Order via WhatsApp / DM</button>
+        <div class="listrow"><div class="row"><span class="muted">Delivery</span><b>Free · 4–7 business days</b></div></div>
+        <div class="sectionhead"><h2>Product details</h2></div>
+        <div class="listrow"><p>• 4-piece premium set option<br>• Silver beaded embroidery / laced trim on selected designs<br>• Quality checked before dispatch<br>• Custom sizing available via DM</p></div>
+        <div class="sectionhead"><h2>You may also like</h2></div>
+        <div class="grid" id="relatedGrid"></div>
+      </section>
+
+      <!-- ===================== WISHLIST ===================== -->
+      <section id="wishlist" class="screen">
+        <div class="eyebrow">SAVED</div>
+        <h1 class="h1">Wishlist</h1>
+        <p class="muted" id="wishCount" style="font-size:12px;margin:-8px 0 12px"></p>
+        <div class="grid" id="wishlistGrid"></div>
+        <div id="wishEmpty" class="empty" style="display:none">
+          <div class="big">♡</div>
+          <h2>Nothing saved yet</h2>
+          <p>Tap the heart on any style to keep it here for later.</p>
+          <button class="darkbtn" onclick="go('men')">Browse collection</button>
+        </div>
+      </section>
+
+      <!-- ===================== CART ===================== -->
+      <section id="cart" class="screen">
+        <div class="eyebrow">YOUR BAG</div>
+        <h1 class="h1">Cart</h1>
+        <div id="cartList"></div>
+        <div class="listrow totals" id="cartTotals">
+          <div class="row"><b>Subtotal</b><b id="cartSubtotal">₹0</b></div>
+          <div class="row" style="margin-top:8px"><span class="muted">Delivery</span><span id="cartDelivery">Free</span></div>
+          <hr class="hr">
+          <div class="row"><b>Total</b><b id="cartTotal">₹0</b></div>
+        </div>
+        <button class="darkbtn btnfull" onclick="go('checkout')">Proceed to Checkout</button>
+        <button class="primary btnfull" style="margin-top:9px" onclick="dmOrder()">Order on WhatsApp / DM</button>
+        <div id="cartEmpty" class="empty" style="display:none">
+          <div class="big">🛍</div>
+          <h2>Your bag is empty</h2>
+          <p>Add a signature piece to get started — free delivery on every order.</p>
+          <button class="darkbtn" onclick="go('men')">Start shopping</button>
+        </div>
+      </section>
+
+      <!-- ===================== CHECKOUT ===================== -->
+      <section id="checkout" class="screen">
+        <div class="row"><button class="link" onclick="go('cart')">← Cart</button><h2 class="h2" style="margin:0">Checkout</h2><span></span></div>
+        <div class="progress"><div class="step done"></div><div class="step done"></div><div class="step"></div></div>
+        <div class="required-box">
+          <h3>Delivery &amp; Contact Details</h3>
+          <p>All fields marked * are compulsory for placing an order.</p>
+          <div class="required-grid">
+            <div><label class="required-label" for="checkoutName">Full Name <span>*</span></label><input id="checkoutName" class="required-input" type="text" autocomplete="name" placeholder="Full name"></div>
+            <div><label class="required-label" for="checkoutPhone">Mobile Number <span>*</span></label><input id="checkoutPhone" class="required-input" type="tel" inputmode="numeric" maxlength="10" autocomplete="tel-national" placeholder="10-digit mobile"></div>
+          </div>
+          <label class="required-label" for="checkoutEmail">Email Address <span>*</span></label>
+          <input id="checkoutEmail" class="required-input" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com">
+          <label class="required-label" for="checkoutAddress">Complete Delivery Address <span>*</span></label>
+          <textarea id="checkoutAddress" class="required-input" rows="4" autocomplete="street-address" placeholder="House/Flat, Street, Area, City, State, PIN"></textarea>
+          <div class="account-summary"><b>Order updates</b><p id="verifiedCustomerLine">We will confirm your order and share payment details on WhatsApp.</p></div>
+        </div>
+        <div class="listrow"><b>Order summary</b><div id="checkoutSummary"></div><hr class="hr"><div class="row"><b>Total payable</b><b id="checkoutTotal">₹0</b></div></div>
+        <div class="listrow"><b>Delivery</b><div class="row"><span>Standard delivery</span><b>FREE</b></div><p>Estimated 4–7 business days</p></div>
+        <button class="darkbtn btnfull" onclick="continueToPayment()">Continue to Payment</button>
+      </section>
+
+      <!-- ===================== PAYMENT ===================== -->
+      <section id="payment" class="screen">
+        <div class="row"><button class="link" onclick="go('checkout')">← Back</button><h2 class="h2" style="margin:0">Payment</h2><span></span></div>
+        <div class="progress"><div class="step done"></div><div class="step done"></div><div class="step done"></div></div>
+        <div class="listrow">
+          <b>How would you like to pay?</b>
+          <label class="payopt"><span>UPI (payment link shared on WhatsApp)</span><input type="radio" name="pay" value="UPI" checked></label>
+          <label class="payopt"><span>Cash on Delivery</span><input type="radio" name="pay" value="Cash on Delivery"></label>
+        </div>
+        <div class="listrow"><div class="row"><span>Order total</span><b id="payTotal">₹0</b></div><p id="payItems" class="muted" style="font-size:11px;margin:6px 0 0"></p></div>
+        <button class="darkbtn btnfull" onclick="confirmOrder()">Place Order on WhatsApp</button>
+        <p class="muted" style="font-size:11px;text-align:center;margin-top:10px">Your order opens in WhatsApp. Tap send, and Gulxeb will confirm it and share payment details.</p>
+      </section>
+
+      <!-- ===================== CONFIRMATION ===================== -->
+      <section id="confirmation" class="screen">
+        <div class="empty">
+          <div class="big">✓</div>
+          <div class="eyebrow">ORDER PLACED</div>
+          <h2>Thank you for choosing Gulxeb.</h2>
+          <p>Order <b id="confirmOrderId">#GX00000</b> is ready in WhatsApp. Please make sure you tapped send. We confirm every order there.</p>
+          <button class="primary" style="margin-bottom:9px" onclick="resendOrder()">Open WhatsApp again</button>
+          <button class="darkbtn" onclick="go('orders')">Track Order</button>
+          <button class="primary" style="margin-top:9px" onclick="go('home')">Continue Shopping</button>
+        </div>
+      </section>
+
+      <!-- ===================== ORDERS ===================== -->
+      <section id="orders" class="screen">
+        <div class="eyebrow">MY ORDERS</div>
+        <h1 class="h1">Orders &amp; Tracking</h1>
+        <div id="ordersList"></div>
+        <div id="ordersEmpty" class="empty" style="display:none">
+          <div class="big">📦</div>
+          <h2>No orders yet</h2>
+          <p>Once you place an order, you can track it here.</p>
+          <button class="darkbtn" onclick="go('men')">Start shopping</button>
+        </div>
+        <div class="listrow"><b>Order status</b><p>For live updates on any order, message Gulxeb on WhatsApp with your order number.</p><button class="link" onclick="dmOrder()">Contact support →</button></div>
+      </section>
+
+      <!-- ===================== TRACKING ===================== -->
+      <section id="tracking" class="screen">
+        <div class="row"><button class="link" onclick="go('orders')">← Orders</button><h2 class="h2" style="margin:0">Track</h2><span></span></div>
+        <div id="trackBody"></div>
+      </section>
+
+      <!-- ===================== PROFILE ===================== -->
+      <section id="profile" class="screen">
+        <div class="eyebrow">MY ACCOUNT</div>
+        <h1 class="h1">Profile</h1>
+        <div class="listrow">
+          <b id="profileName">Guest</b>
+          <p id="profileMobile">Not logged in</p>
+          <span class="verified-pill" id="profileVerified" style="display:none">✓ Customer account</span>
+        </div>
+        <div class="statgrid" id="profileStats"></div>
+        <div class="listrow"><b>Account &amp; Orders</b><p>View your orders, delivery tracking and saved customer details.</p><button class="darkbtn btnfull" style="margin-top:8px" onclick="go('orders')">My Orders</button></div>
+        <button class="auth-secondary" id="profileLogout" onclick="signOut()">Log out</button>
+      </section>
+
+      <!-- ===================== OFFERS ===================== -->
+      <section id="offers" class="screen">
+        <div class="eyebrow">EXCLUSIVE</div>
+        <h1 class="h1">Offers</h1>
+        <div class="hero" style="min-height:210px">
+          <div class="eyebrow">GULXEB PRIVATE EDIT</div>
+          <h1 style="font-size:28px">Elevated style, better value.</h1>
+          <p>Ask on WhatsApp / DM for current bundle and repeat-customer offers.</p>
+          <button class="primary" onclick="dmOrder()">Claim via WhatsApp / DM</button>
+        </div>
+        <div class="listrow"><b>Bundle enquiry</b><p>Men's + women's occasion looks for family events and celebrations.</p><button class="link" onclick="dmOrder()">Enquire →</button></div>
+        <div class="listrow"><b>Custom design</b><p>Discuss your preferred fabric, detailing and fit before ordering.</p><button class="link" onclick="dmOrder()">Start a DM →</button></div>
+        <div class="listrow"><b>Member pricing</b><p>Logged-in customers see repeat-purchase pricing at checkout automatically.</p></div>
+      </section>
+
+    </main>
+
+    <nav class="bottom" aria-label="Primary">
+      <button class="navitem active" data-nav="home" onclick="go('home')"><b>⌂</b>Home</button>
+      <button class="navitem" data-nav="categories" onclick="go('categories')"><b>◈</b>Categories</button>
+      <button class="navitem" data-nav="wishlist" onclick="go('wishlist')"><b>♡</b>Wishlist<span class="dot" id="navWishCount" style="display:none"></span></button>
+      <button class="navitem" data-nav="cart" onclick="go('cart')"><b>🛍</b>Bag<span class="dot" id="navBagCount" style="display:none"></span></button>
+      <button class="navitem" data-nav="profile" onclick="account()"><b>◯</b>Profile</button>
+    </nav>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div></div>
+
+  <footer class="site-footer">
+    <div><b>GULXEB</b><span>FASHION INDUSTRIES</span></div>
+    <p>Wear Your Confidence. · Premium tailoring · Custom fit · WhatsApp / DM ordering</p>
+    <div class="footer-links"><button onclick="go('men')">Men</button><button onclick="go('women')">Women</button><button onclick="go('offers')">Offers</button><button onclick="dmOrder()">WhatsApp / DM</button></div>
+    <small>© 2026 Gulxeb Fashion Industries</small>
+  </footer>
+</div>
+
+<script>
+"use strict";
+/* =========================================================
+   STORE SETTINGS — edit these lines to update the shop
+   ========================================================= */
+const CONFIG = {
+  whatsappNumber: "",          // orders go here, with country code, e.g. "919876543210"
+  logo: "logo.png"             // upload your logo as logo.png next to index.html
+};
+/* =========================================================
+   Gulxeb Fashion Industries — single-file storefront
+   ========================================================= */
+
+/* ---------- logo (kept once, not three times) ---------- */
+const LOGO = CONFIG.logo;
+
+/* ---------- catalogue: single source of truth ---------- */
+const SIZES = ['S','M','L','XL','XXL'];
+const CATS  = ['All','Suits','Blazers','Coat Pant'];
+const PRODUCTS = [
+  {id:'gx-01', name:'Midnight Executive Suit',   price:5999, mrp:7499, cat:'Suits',     gender:'men',   tone:'',           badge:'Bestseller', rating:4.9, reviews:24, short:'4-piece • Imported premium', sizes:['S','M','L','XL','XXL'], desc:'Four-piece tailored set in imported premium fabric with signature silver detailing — cut for boardroom authority and evening presence alike.'},
+  {id:'gx-02', name:'Silver Luxe Blazer',         price:4999, mrp:6499, cat:'Blazers',   gender:'men',   tone:'light',      badge:'New',        rating:4.8, reviews:41, short:'Silver-laced trim',           sizes:['M','L','XL'],            desc:'A structured blazer traced with silver-laced trim. Lightweight shoulder, confident drape, made to lead the room.'},
+  {id:'gx-03', name:'Navy Heritage Coat Pant',    price:5499, mrp:6999, cat:'Coat Pant', gender:'men',   tone:'',           badge:'',           rating:4.7, reviews:18, short:'Classic tailored cut',         sizes:['S','M','L','XL','XXL'], desc:'Heritage navy coat-pant in a classic tailored cut. Built for weddings, board meets and every formal evening between.'},
+  {id:'gx-04', name:'Royal Evening Blazer',       price:4599, mrp:5999, cat:'Blazers',   gender:'men',   tone:'light',      badge:'Occasion',    rating:4.6, reviews:12, short:'Occasion edit',               sizes:['M','L','XL'],            desc:'A celebratory evening blazer with a royal accent — made to be noticed without trying.'},
+  {id:'gx-05', name:'Silver Grace Suit',          price:5799, mrp:6999, cat:'Suits',     gender:'women', tone:'women',      badge:'New',        rating:4.9, reviews:33, short:'Premium imported fabric',      sizes:['S','M','L'],             desc:'Occasion suit in premium imported fabric with a graceful silver thread finish.'},
+  {id:'gx-06', name:'Navy Signature Blazer',      price:4799, mrp:6299, cat:'Blazers',   gender:'women', tone:'light women', badge:'',           rating:4.7, reviews:21, short:'Minimal luxury',              sizes:['M','L','XL','XXL'],      desc:'Minimal, luxurious navy blazer — clean lines, premium finish, effortless drape.'}
+];
+
+/* ---------- helpers ---------- */
+const $  = s => document.querySelector(s);
+const byId = id => PRODUCTS.find(p => p.id === id);
+const money = n => '₹' + Number(n || 0).toLocaleString('en-IN');
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const discount = p => Math.round((1 - p.price / p.mrp) * 100);
+const starRow = r => '★★★★★'.slice(0, Math.round(r)) + '☆☆☆☆☆'.slice(0, 5 - Math.round(r));
+
+/* ---------- storage (never throws) ---------- */
+const store = {
+  get(k, fallback){ try{ const v = localStorage.getItem('gulxeb_' + k); return v === null ? fallback : JSON.parse(v); }catch(e){ return fallback; } },
+  set(k, v){ try{ localStorage.setItem('gulxeb_' + k, JSON.stringify(v)); }catch(e){} },
+  del(k){ try{ localStorage.removeItem('gulxeb_' + k); }catch(e){} }
+};
+
+/* ---------- state ---------- */
+const state = {
+  customer : store.get('customer', null),
+  cart     : store.get('cart', []),
+  wish     : store.get('wish', []),
+  orders   : store.get('orders', []),
+  filters  : {cat:'All', size:null, max:8000},
+  sort     : 'featured',
+  query    : '',
+  product  : PRODUCTS[0],
+  size     : 'M',
+  qty      : 1,
+  pendingGo: null,
+  lastOrder: null
+};
+let lastCollection = 'men';
+let filterReturn = 'men';
+
+const saveCart  = () => store.set('cart', state.cart);
+const saveWish  = () => store.set('wish', state.wish);
+const saveOrders= () => store.set('orders', state.orders);
+
+/* =========================================================
+   RENDERING
+   ========================================================= */
+function cardHTML(p){
+  const wished = state.wish.indexOf(p.id) > -1;
+  return '<article class="card" tabindex="0" role="button" data-open="'+p.id+'" aria-label="'+esc(p.name)+', '+money(p.price)+'">'+
+    '<div class="pic '+(p.tone||'')+'">'+
+      (p.badge ? '<span class="picbadge">'+esc(p.badge)+'</span>' : '')+
+      '<button class="heart'+(wished?' on':'')+'" data-wish="'+p.id+'" aria-label="'+(wished?'Remove from':'Save to')+' wishlist" aria-pressed="'+wished+'">'+(wished?'♥':'♡')+'</button>'+
+    '</div>'+
+    '<div class="info">'+
+      '<b>'+esc(p.name)+'</b>'+
+      '<p>'+esc(p.short)+'</p>'+
+      '<div><span class="price">'+money(p.price)+'</span><span class="old">'+money(p.mrp)+'</span><span class="off">'+discount(p)+'% OFF</span></div>'+
+      '<div class="raterow"><span class="stars">'+starRow(p.rating)+'</span><span class="muted">'+p.rating+' · '+p.reviews+' reviews</span></div>'+
+    '</div>'+
+  '</article>';
+}
+function emptyBlock(icon, title, body, cta){
+  return '<div class="empty"><div class="big">'+icon+'</div><h2>'+esc(title)+'</h2><p>'+esc(body)+'</p>'+
+         (cta ? '<button class="darkbtn" onclick="'+cta.fn+'">'+esc(cta.label)+'</button>' : '')+'</div>';
+}
+
+function renderHome(){
+  $('#homeGrid').innerHTML = PRODUCTS.slice(0,2).map(cardHTML).join('');
+}
+
+function collectionProducts(gender){
+  let list = PRODUCTS.filter(p => p.gender === gender);
+  if(state.filters.cat !== 'All') list = list.filter(p => p.cat === state.filters.cat);
+  if(state.filters.size) list = list.filter(p => p.sizes.indexOf(state.filters.size) > -1);
+  list = list.filter(p => p.price <= state.filters.max);
+  if(state.sort === 'priceAsc')  list = list.slice().sort((a,b) => a.price - b.price);
+  if(state.sort === 'priceDesc') list = list.slice().sort((a,b) => b.price - a.price);
+  return list;
+}
+function renderCollection(gender){
+  const list = collectionProducts(gender);
+  $('#' + gender + 'Grid').innerHTML = list.map(cardHTML).join('');
+  const active = state.filters.cat;
+  $('#' + gender + 'Chips').innerHTML = CATS.map(c =>
+    '<button class="chip'+(c===active?' active':'')+'" onclick="setCategory(\''+c+'\')">'+c+'</button>').join('');
+  const note = state.filters.cat !== 'All' ? ' · ' + state.filters.cat : '';
+  const priceNote = state.filters.max < 8000 ? ' · under ' + money(state.filters.max) : '';
+  $('#' + gender + 'Count').textContent = list.length + ' style' + (list.length===1?'':'s') + note + priceNote;
+}
+function setCategory(c){
+  state.filters.cat = c;
+  renderCollection('men'); renderCollection('women');
+  toast(c === 'All' ? 'Showing all styles' : 'Showing ' + c);
+}
+function sortCollection(mode){
+  state.sort = mode;
+  renderCollection('men'); renderCollection('women');
+  toast(mode === 'priceAsc' ? 'Sorted: price low to high' : 'Sorted: price high to low');
+}
+function browse(gender, cat){
+  state.filters.cat = cat || 'All';
+  state.filters.max = 8000;
+  go(gender);
+  toast('Showing ' + cat);
+}
+
+/* ---------- search ---------- */
+function searchFill(v){ $('#searchInput').value = v; state.query = v; renderSearch(); $('#searchInput').focus(); }
+function clearSearch(){ $('#searchInput').value = ''; state.query = ''; renderSearch(); }
+function runSearch(){
+  state.query = ($('#searchInput').value || '').trim();
+  renderSearch();
+}
+function renderSearch(){
+  const q = state.query.toLowerCase();
+  const list = q
+    ? PRODUCTS.filter(p => (p.name + ' ' + p.cat + ' ' + p.short + ' ' + p.desc).toLowerCase().indexOf(q) > -1)
+    : PRODUCTS;
+  $('#searchTitle').textContent = q ? 'Results' : 'Popular right now';
+  $('#searchCount').textContent = q ? list.length + ' match' + (list.length===1?'':'es') + ' for “' + state.query + '”' : list.length + ' styles';
+  $('#searchClear').style.display = state.query ? 'inline-flex' : 'none';
+  $('#searchGrid').innerHTML = list.map(cardHTML).join('');
+  $('#searchEmpty').style.display = list.length ? 'none' : 'block';
+  $('#searchGrid').style.display = list.length ? 'grid' : 'none';
+}
+
+/* ---------- filters ---------- */
+function renderFilters(){
+  $('#filterCats').innerHTML = CATS.map(c =>
+    '<button class="chip'+(c===state.filters.cat?' active':'')+'" onclick="setFilterCat(\''+c+'\')">'+c+'</button>').join('');
+  const sizes = [''].concat(SIZES);
+  $('#filterSizes').innerHTML = sizes.map(s =>
+    '<button class="size'+(s===(state.filters.size||'')?' selected':'')+'" onclick="setFilterSize(\''+s+'\')">'+(s||'All')+'</button>').join('');
+  $('#filterPrice').value = state.filters.max;
+  $('#filterPriceLabel').textContent = '₹1,500 — ' + money(state.filters.max);
+  const n = collectionProducts('men').length + collectionProducts('women').length;
+  $('#filterSummary').textContent = n + ' style' + (n===1?'':'s') + ' match your filters';
+}
+function setFilterCat(c){ state.filters.cat = c; renderFilters(); renderCollection('men'); renderCollection('women'); }
+function setFilterSize(s){
+  state.filters.size = s || null;
+  renderFilters(); renderCollection('men'); renderCollection('women');
+}
+function resetFilters(){
+  state.filters = {cat:'All', size:null, max:8000};
+  state.sort = 'featured';
+  renderFilters(); renderCollection('men'); renderCollection('women');
+  toast('Filters reset');
+}
+function applyFilters(){
+  renderFilters(); renderCollection('men'); renderCollection('women');
+  go(filterReturn);
+  toast('Filters applied');
+}
+
+/* ---------- wishlist ---------- */
+function isWished(id){ return state.wish.indexOf(id) > -1; }
+function toggleWish(id){
+  const i = state.wish.indexOf(id);
+  if(i > -1){ state.wish.splice(i,1); toast('Removed from wishlist'); }
+  else { state.wish.push(id); toast('Saved “'+byId(id).name+'” to wishlist'); }
+  saveWish();
+  renderWishlist(); renderCounters();
+  if(state.product && state.product.id === id) renderProduct();
+  if(currentScreen() === 'search') renderSearch();
+  if(currentScreen() === 'men') renderCollection('men');
+  if(currentScreen() === 'women') renderCollection('women');
+}
+function renderWishlist(){
+  const list = state.wish.map(byId).filter(Boolean);
+  $('#wishCount').textContent = list.length ? list.length + ' saved item' + (list.length===1?'':'s') : '';
+  $('#wishlistGrid').innerHTML = list.map(cardHTML).join('');
+  $('#wishlistGrid').style.display = list.length ? 'grid' : 'none';
+  $('#wishEmpty').style.display = list.length ? 'none' : 'block';
+}
+
+/* ---------- product ---------- */
+let selectedSize = 'M';
+function openProduct(id){
+  const p = byId(id); if(!p) return;
+  const from = currentScreen();
+  state.product = p;
+  state.productFrom = ['men','women','home','categories','search'].indexOf(from) > -1 ? from : lastCollection;
+  selectedSize = p.sizes.indexOf('M') > -1 ? 'M' : p.sizes[0];
+  state.qty = 1;
+  go('product');
+  renderProduct();
+}
+function productReturn(){ return state.productFrom || lastCollection; }
+function renderProduct(){
+  const p = state.product; if(!p) return;
+  $('#productName').textContent = p.name;
+  $('#productCat').textContent = p.cat + ' · GULXEB SIGNATURE';
+  $('#productRating').innerHTML = '<span class="stars">'+starRow(p.rating)+'</span> <span class="muted">'+p.rating+' · '+p.reviews+' reviews</span>';
+  $('#productPrice').textContent = money(p.price);
+  $('#productMrp').textContent = money(p.mrp);
+  $('#productOff').textContent = discount(p) + '% OFF';
+  $('#productDesc').textContent = p.desc;
+  $('#productHero').className = 'detailhero ' + (p.tone || '');
+  const h = $('#productHeart');
+  const wished = isWished(p.id);
+  h.textContent = wished ? '♥' : '♡';
+  h.classList.toggle('on', wished);
+  h.setAttribute('aria-pressed', wished ? 'true' : 'false');
+  $('#productSizes').innerHTML = SIZES.map(s => {
+    const out = p.sizes.indexOf(s) === -1;
+    return '<button class="size'+(s===selectedSize?' selected':'')+'"'+(out?' disabled aria-disabled="true" title="Out of stock"':'')+' onclick="selectSize(\''+s+'\')">'+s+'</button>';
+  }).join('');
+  $('#qty').textContent = state.qty;
+  const rel = PRODUCTS.filter(x => x.id !== p.id && x.cat === p.cat).slice(0,2);
+  const others = rel.length ? rel : PRODUCTS.filter(x => x.id !== p.id).slice(0,2);
+  $('#relatedGrid').innerHTML = others.map(cardHTML).join('');
+}
+function selectSize(s){
+  if(state.product && state.product.sizes.indexOf(s) === -1){ toast('Size ' + s + ' is out of stock for this style'); return; }
+  selectedSize = s; renderProduct();
+}
+function changeQty(n){
+  state.qty = Math.min(10, Math.max(1, state.qty + n));
+  $('#qty').textContent = state.qty;
+}
+
+/* ---------- cart ---------- */
+function cartLines(){
+  return state.cart.map(l => {
+    const p = byId(l.id);
+    return p ? {line:l, product:p, amount:p.price * l.qty} : null;
+  }).filter(Boolean);
+}
+function cartTotal(){ return cartLines().reduce((s,l) => s + l.amount, 0); }
+function cartCount(){ return state.cart.reduce((s,l) => s + l.qty, 0); }
+function addToCart(id, size, qty){
+  const p = byId(id); if(!p) return;
+  const s = size || selectedSize || 'M';
+  const q = qty || 1;
+  const key = id + '|' + s;
+  const line = state.cart.filter(l => l.key === key)[0];
+  if(line) line.qty = Math.min(10, line.qty + q);
+  else state.cart.push({key:key, id:id, size:s, qty:q});
+  saveCart(); renderCart(); renderCounters();
+  toast(p.name + ' (' + s + ') added to bag');
+}
+function changeLineQty(key, n){
+  const line = state.cart.filter(l => l.key === key)[0]; if(!line) return;
+  line.qty = Math.min(10, line.qty + n);
+  if(line.qty <= 0) state.cart = state.cart.filter(l => l.key !== key);
+  saveCart(); renderCart(); renderCounters();
+}
+function removeLine(key){
+  const line = state.cart.filter(l => l.key === key)[0];
+  state.cart = state.cart.filter(l => l.key !== key);
+  saveCart(); renderCart(); renderCounters();
+  toast(line ? 'Removed from bag' : 'Bag updated');
+}
+function renderCart(){
+  const lines = cartLines();
+  $('#cartList').innerHTML = lines.map(l =>
+    '<div class="listrow cartin">'+
+      '<div class="thumb '+(l.product.tone||'')+'"></div>'+
+      '<div class="body">'+
+        '<div class="name">'+esc(l.product.name)+'</div>'+
+        '<div class="meta">Size '+esc(l.line.size)+' · '+esc(l.product.short)+'</div>'+
+        '<div class="row" style="align-items:center">'+
+          '<div class="qty"><button onclick="changeLineQty(\''+l.line.key+'\',-1)" aria-label="Decrease quantity">−</button><span>'+l.line.qty+'</span><button onclick="changeLineQty(\''+l.line.key+'\',1)" aria-label="Increase quantity">+</button></div>'+
+          '<b class="price">'+money(l.amount)+'</b>'+
+        '</div>'+
+        '<div class="linkrow"><button class="link" onclick="removeLine(\''+l.line.key+'\')">Remove</button><span class="muted" style="font-size:11px">'+money(l.product.price)+' each</span></div>'+
+      '</div>'+
+    '</div>').join('');
+  const total = cartTotal();
+  $('#cartSubtotal').textContent = money(total);
+  $('#cartDelivery').textContent = total ? 'Free' : '—';
+  $('#cartTotal').textContent = money(total);
+  $('#cartTotals').style.display = lines.length ? 'block' : 'none';
+  $('#cartEmpty').style.display = lines.length ? 'none' : 'block';
+}
+function buyNow(){
+  if(!state.cart.length) addToCart(state.product.id, selectedSize, state.qty);
+  go('checkout');
+}
+function renderCounters(){
+  const bag = cartCount(), wish = state.wish.length;
+  ['webBagCount','mobBagCount','navBagCount'].forEach(id => {
+    const el = document.getElementById(id); if(!el) return;
+    el.textContent = bag; el.classList.toggle('show', bag > 0);
+    el.style.display = bag > 0 ? (id === 'navBagCount' ? 'grid' : 'grid') : 'none';
+  });
+  ['webWishCount','mobWishCount','navWishCount'].forEach(id => {
+    const el = document.getElementById(id); if(!el) return;
+    el.textContent = wish;
+    el.style.display = wish > 0 ? 'grid' : 'none';
+  });
+}
+
+/* ---------- checkout / payment / orders ---------- */
+function prefillCheckout(){
+  if(state.customer){
+    $('#checkoutName').value = state.customer.name || '';
+    $('#checkoutPhone').value = state.customer.phone || '';
+    if(state.customer.email) $('#checkoutEmail').value = state.customer.email;
+    $('#verifiedCustomerLine').textContent = 'We will confirm your order and share payment details on WhatsApp.';
+  }
+  renderCheckoutSummary();
+}
+function renderCheckoutSummary(){
+  const lines = cartLines();
+  $('#checkoutSummary').innerHTML = lines.length
+    ? lines.map(l => '<div class="row" style="margin-top:8px"><span style="font-size:12px">'+esc(l.product.name)+' · '+esc(l.line.size)+' × '+l.line.qty+'</span><b style="font-size:12px">'+money(l.amount)+'</b></div>').join('')
+    : '<p class="muted" style="font-size:12px;margin:8px 0 0">Your bag is empty.</p>';
+  $('#checkoutTotal').textContent = money(cartTotal());
+}
+function continueToPayment(){
+  if(!state.customer){ state.pendingGo = 'checkout'; showLogin(); return; }
+  const name  = $('#checkoutName').value.trim();
+  const phone = $('#checkoutPhone').value.replace(/\D/g,'');
+  const email = $('#checkoutEmail').value.trim();
+  const address = $('#checkoutAddress').value.trim();
+  if(!name || !phone || !email || !address){ toast('Name, mobile, email and address are compulsory'); return; }
+  if(phone.length !== 10){ toast('Enter a valid 10-digit mobile number'); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ toast('Enter a valid email address'); return; }
+  if(!cartLines().length){ toast('Your bag is empty'); go('cart'); return; }
+  state.customer.email = email;
+  state.customer.phone = phone;
+  store.set('customer', state.customer);
+  state.checkout = {name:name, phone:phone, email:email, address:address};
+  go('payment');
+  $('#payTotal').textContent = money(cartTotal());
+  $('#payItems').textContent = cartLines().map(l => l.product.name + ' · ' + l.line.size + ' × ' + l.line.qty).join('  |  ');
+}
+function confirmOrder(){
+  if(!state.checkout || !cartLines().length){ toast('Complete checkout first'); go('checkout'); return; }
+  const method = (document.querySelector('input[name=pay]:checked') || {value:'UPI'}).value;
+  const order = {
+    id: 'GX' + (10000 + Math.floor(Math.random() * 89999)),
+    ts: Date.now(),
+    name: state.checkout.name,
+    phone: state.checkout.phone,
+    email: state.checkout.email,
+    address: state.checkout.address,
+    payment: method,
+    total: cartTotal(),
+    items: cartLines().map(l => ({name:l.product.name, size:l.line.size, qty:l.line.qty, price:l.product.price}))
+  };
+  sendWhatsApp(orderMessage(order));
+  state.orders.unshift(order);
+  state.lastOrder = order;
+  saveOrders();
+  state.cart = [];
+  saveCart();
+  renderCart(); renderCounters(); renderOrders();
+  go('confirmation');
+  $('#confirmOrderId').textContent = '#' + order.id;
+  toast('Order #' + order.id + ' opened in WhatsApp');
+}
+function renderOrders(){
+  const list = state.orders;
+  $('#ordersList').innerHTML = list.map(o =>
+    '<div class="listrow">'+
+      '<div class="row"><div><b>#'+o.id+'</b><p>'+esc(o.items.map(i => i.name).join(', '))+'</p></div><span class="badge">Sent on WhatsApp</span></div>'+
+      '<div class="row" style="margin-top:10px"><span class="muted" style="font-size:11px">'+o.items.length+' item'+(o.items.length===1?'':'s')+' · '+new Date(o.ts).toLocaleDateString('en-IN')+'</span><b>'+money(o.total)+'</b></div>'+
+      '<button class="darkbtn btnfull" style="margin-top:12px" onclick="openTracking(\''+o.id+'\')">Track shipment</button>'+
+    '</div>').join('');
+  $('#ordersEmpty').style.display = list.length ? 'none' : 'block';
+}
+function openTracking(id){
+  const o = state.orders.filter(x => x.id === id)[0] || state.orders[0];
+  if(!o){ toast('No order to track'); return; }
+  go('tracking');
+  $('#trackBody').innerHTML =
+    '<div class="listrow"><b>#'+o.id+'</b><p>Placed '+new Date(o.ts).toLocaleString('en-IN')+' · Delivery in 4–7 business days after confirmation</p>'+
+      '<p style="margin-top:8px">'+esc(o.items.map(i => i.name+' ('+i.size+') × '+i.qty).join(', '))+'</p>'+
+      '<p style="margin-top:4px">Delivering to: '+esc(o.address)+'</p></div>'+
+    '<div class="track">'+
+      '<div class="event done"><b>Order sent</b><p>'+new Date(o.ts).toLocaleDateString('en-IN')+' · Sent to Gulxeb on WhatsApp · '+esc(o.payment)+'</p></div>'+
+      '<div class="event"><b>Confirmed by Gulxeb</b><p>We confirm availability and payment on WhatsApp</p></div>'+
+      '<div class="event"><b>Quality check</b><p>Your piece is prepared and checked for dispatch</p></div>'+
+      '<div class="event"><b>Shipped</b><p>Tracking will appear after dispatch</p></div>'+
+      '<div class="event"><b>Delivered</b><p>Enjoy your Gulxeb look.</p></div>'+
+    '</div>';
+}
+
+/* ---------- profile ---------- */
+function renderProfile(){
+  const c = state.customer;
+  $('#profileName').textContent = c ? c.name : 'Guest';
+  $('#profileMobile').textContent = c ? '+91 ' + c.phone : 'Not logged in';
+  $('#profileVerified').style.display = c ? 'inline-flex' : 'none';
+  $('#profileStats').innerHTML =
+    '<div class="stat"><b>'+state.orders.length+'</b><span>Orders</span></div>'+
+    '<div class="stat"><b>'+state.wish.length+'</b><span>Saved</span></div>'+
+    '<div class="stat"><b>'+cartCount()+'</b><span>In bag</span></div>';
+  $('#profileLogout').style.display = c ? 'block' : 'none';
+}
+function account(){ if(state.customer) go('profile'); else showLogin(); }
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+let pendingPhone = '';
+function showLogin(){
+  hideAll();
+  $('#login').classList.add('active');
+  scrollTop();
+  if(state.customer){
+    $('#authTitle').textContent = 'Welcome back, ' + state.customer.name;
+    $('#authSubtitle').textContent = '+91 ' + state.customer.phone + ' • Customer account';
+    $('#phoneStep').style.display = 'none';
+    $('#otpStep').style.display = 'none';
+    $('#nameStep').style.display = 'none';
+    $('#signedInStep').style.display = 'block';
+    $('#signedInPill').textContent = '✓ +91 ' + state.customer.phone;
+  } else {
+    showPhoneStep();
+  }
+}
+function showPhoneStep(){
+  $('#signedInStep').style.display = 'none';
+  $('#otpStep').style.display = 'none';
+  $('#nameStep').style.display = 'none';
+  $('#phoneStep').style.display = 'block';
+  $('#authTitle').textContent = 'Login to Gulxeb';
+  $('#authSubtitle').textContent = 'Enter your mobile number so we can confirm your order on WhatsApp.';
+}
+function sendOtp(){
+  const phone = ($('#loginPhone').value || '').replace(/\D/g,'');
+  if(phone.length !== 10){ toast('Please enter a valid 10-digit mobile number'); return; }
+  pendingPhone = phone;
+  $('#phoneStep').style.display = 'none';
+  $('#otpStep').style.display = 'none';
+  $('#nameStep').style.display = 'block';
+  $('#namePill').textContent = '✓ +91 ' + phone;
+  $('#authTitle').textContent = 'What should we call you?';
+  $('#authSubtitle').textContent = 'One last step to create your customer account.';
+}
+function verifyOtp(){
+  const otp = ($('#loginOtp').value || '').trim();
+  if(otp !== '123456'){ toast('Invalid OTP. Use demo OTP 123456'); return; }
+  $('#otpStep').style.display = 'none';
+  $('#nameStep').style.display = 'block';
+  $('#authTitle').textContent = 'What should we call you?';
+  $('#authSubtitle').textContent = 'Your mobile number is verified.';
+}
+function completeLogin(){
+  const name = ($('#loginName').value || '').trim();
+  if(!name){ toast('Please enter your name'); return; }
+  state.customer = {name:name, phone:pendingPhone};
+  store.set('customer', state.customer);
+  toast('Customer account created successfully');
+  finishLogin();
+}
+function finishLogin(){
+  const next = state.pendingGo || 'home';
+  state.pendingGo = null;
+  go(next);
+}
+function signOut(){
+  state.customer = null;
+  state.pendingGo = null;
+  state.checkout = null;
+  store.del('customer');
+  $('#loginName').value = '';
+  $('#loginPhone').value = '';
+  $('#loginOtp').value = '';
+  showLogin();
+  renderProfile();
+  toast('Logged out');
+}
+
+/* =========================================================
+   ROUTER
+   ========================================================= */
+const GATED = ['checkout','payment','confirmation','orders','tracking','profile'];
+function currentScreen(){
+  const el = document.querySelector('.screen.active');
+  return el ? el.id : null;
+}
+function hideAll(){ document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); }
+function scrollTop(){
+  const app = $('#app');
+  if(app && app.scrollHeight > app.clientHeight + 4) app.scrollTo({top:0, behavior:'smooth'});
+  if(window.scrollY > 0) window.scrollTo({top:0, behavior:'smooth'});
+}
+function go(id){
+  if(GATED.indexOf(id) > -1 && !state.customer){ state.pendingGo = id; showLogin(); return; }
+  if(id === 'payment' && !state.checkout){ state.pendingGo = 'checkout'; showLogin(); return; }
+  if(id === 'confirmation' && !state.lastOrder){ state.pendingGo = 'orders'; showLogin(); return; }
+  const target = document.getElementById(id);
+  if(!target) return;
+  const from = currentScreen();
+  if(id === 'filters') filterReturn = (from === 'men' || from === 'women') ? from : lastCollection;
+  hideAll();
+  target.classList.add('active');
+  document.querySelectorAll('.navitem').forEach(n => n.classList.toggle('active', n.dataset.nav === id));
+  document.querySelectorAll('.mnav').forEach(n => {
+    if(n.dataset.nav === id) n.setAttribute('aria-current','page');
+    else n.removeAttribute('aria-current');
+  });
+  scrollTop();
+  if(id === 'men' || id === 'women'){ lastCollection = id; renderCollection(id); }
+  if(id === 'filters') renderFilters();
+  if(id === 'search'){ $('#searchInput').focus(); renderSearch(); }
+  if(id === 'wishlist') renderWishlist();
+  if(id === 'cart') renderCart();
+  if(id === 'checkout') prefillCheckout();
+  if(id === 'payment'){ $('#payTotal').textContent = money(cartTotal()); }
+  if(id === 'orders') renderOrders();
+  if(id === 'profile') renderProfile();
+  if(id === 'home') renderHome();
+}
+
+/* ---------- toast ---------- */
+let toastTimer;
+function toast(msg){
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+/* ---------- WhatsApp ordering ---------- */
+function waLink(text){
+  const num = String(CONFIG.whatsappNumber || '').replace(/\D/g,'');
+  return 'https://wa.me/' + num + '?text=' + encodeURIComponent(text);
+}
+function sendWhatsApp(text){
+  if(!String(CONFIG.whatsappNumber||'').replace(/\D/g,'')){ toast('WhatsApp ordering is being set up. Please try again soon.'); return; }
+  const url = waLink(text);
+  const w = window.open(url, '_blank', 'noopener');
+  if(!w) window.location.href = url;
+}
+function orderMessage(o){
+  const lines = o.items.map((i,n) => (n+1)+'. '+i.name+' | Size '+i.size+' | Qty '+i.qty+' | '+money(i.price*i.qty));
+  return ['*New order '+o.id+'* — Gulxeb Fashion', '', ...lines, '', '*Total: '+money(o.total)+'* (free delivery)',
+    'Payment: '+o.payment, '', '*Customer*', o.name, '+91 '+o.phone, o.email, '', '*Delivery address*', o.address].join('\n');
+}
+function resendOrder(){ if(state.lastOrder) sendWhatsApp(orderMessage(state.lastOrder)); }
+function dmOrder(){
+  const scr = currentScreen();
+  let text;
+  if(scr === 'product' && state.product){
+    const p = state.product;
+    text = 'Hi Gulxeb, I would like to order:\n'+p.name+' | Size '+(selectedSize||'-')+' | Qty '+(state.qty||1)+' | '+money(p.price)+'\nPlease share availability and payment details.';
+  } else if(scr === 'cart' && cartLines().length){
+    text = 'Hi Gulxeb, I would like to order:\n'+cartLines().map(l => l.product.name+' | Size '+l.line.size+' | Qty '+l.line.qty+' | '+money(l.amount)).join('\n')+'\nTotal: '+money(cartTotal())+'\nPlease share availability and payment details.';
+  } else if(scr === 'offers'){
+    text = 'Hi Gulxeb, I would like to know about your current offers and custom designs.';
+  } else {
+    text = 'Hi Gulxeb, I have a question.';
+  }
+  sendWhatsApp(text);
+}
+
+/* =========================================================
+   EVENTS
+   ========================================================= */
+document.addEventListener('click', e => {
+  const wishBtn = e.target.closest('[data-wish]');
+  if(wishBtn){ e.stopPropagation(); toggleWish(wishBtn.getAttribute('data-wish')); return; }
+  const card = e.target.closest('[data-open]');
+  if(card){ openProduct(card.getAttribute('data-open')); }
+});
+document.addEventListener('keydown', e => {
+  if(e.key !== 'Enter' && e.key !== ' ') return;
+  const el = e.target.closest('[data-open],[role="button"]');
+  if(el && el.tagName !== 'BUTTON'){ e.preventDefault(); el.click(); }
+});
+document.addEventListener('input', e => {
+  if(e.target.id === 'searchInput') runSearch();
+  if(e.target.id === 'filterPrice'){
+    state.filters.max = Number(e.target.value);
+    $('#filterPriceLabel').textContent = '₹1,500 — ' + money(state.filters.max);
+    renderCollection('men'); renderCollection('women');
+    const n = collectionProducts('men').length + collectionProducts('women').length;
+    $('#filterSummary').textContent = n + ' style' + (n===1?'':'s') + ' match your filters';
+  }
+});
+document.addEventListener('change', e => {
+  if(e.target.id === 'filterPrice'){ state.filters.max = Number(e.target.value); renderFilters(); }
+});
+
+/* ---------- boot ---------- */
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-logo]').forEach(img => { img.onerror = () => { img.style.display = 'none'; }; img.src = LOGO; });
+  renderHome();
+  renderCollection('men');
+  renderCollection('women');
+  renderFilters();
+  renderSearch();
+  renderWishlist();
+  renderCart();
+  renderOrders();
+  renderProfile();
+  renderCounters();
+});
+</script>
+</body>
+</html>
